@@ -26,6 +26,11 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 "not working at the moment - vim version issue
 "Plugin 'valloric/youcompleteme'
+" syntax checker
+Plugin 'scrooloose/syntastic'
+
+" git features
+Plugin 'tpope/vim-fugitive'
 
 " <==========================================>
 call vundle#end()
@@ -54,9 +59,20 @@ filetype plugin indent on    " required
 inoremap <up> <esc>ddkPi
 inoremap <down> <esc>ddpi
 
+" switch tabs easily
+nnoremap <C-h> :tabprev<CR>
+nnoremap <C-l> :tabnext<CR>
+" close tab
+nnoremap <C-w> :tabclose<CR>
+
+" get to nerdtree easily
+nnoremap <leader>nt :NERDTreeFocus<CR>
+
 " =================
 "  VIEWS
 " =================
+" hide welcome message 
+set shortmess=I
 
 " Set width of explorer
 let g:netrw_winsize = 25
@@ -77,6 +93,10 @@ let g:airline_left_sep = ''
 
 " line numbers
 :set number 
+
+"open nerd tree on startup
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " =============
 " HIGHLIGHTING
