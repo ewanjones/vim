@@ -23,14 +23,25 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'scrooloose/nerdcommenter'
 " fuzzy file finder
 Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/nerdtree'
+
 "not working at the moment - vim version issue
 "Plugin 'valloric/youcompleteme'
+
 " syntax checker
 Plugin 'scrooloose/syntastic'
 
 " git features
 Plugin 'tpope/vim-fugitive'
+Plugin 'xuyuanp/nerdtree-git-plugin'
+
+" syntax highlighting
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'elzr/vim-json'
+
+" nerdtree
+Plugin 'scrooloose/nerdtree'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+
 
 " <==========================================>
 call vundle#end()
@@ -63,10 +74,11 @@ inoremap <down> <esc>ddpi
 nnoremap <C-h> :tabprev<CR>
 nnoremap <C-l> :tabnext<CR>
 " close tab
-nnoremap <C-w> :tabclose<CR>
+nnoremap <C-q> :tabclose<CR>
 
 " get to nerdtree easily
-nnoremap <leader>nt :NERDTreeFocus<CR>
+nnoremap <leader>n :NERDTreeFocus<CR>
+
 
 " =================
 "  VIEWS
