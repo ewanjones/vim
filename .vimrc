@@ -17,18 +17,20 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 " powerline - fancy fonts
-Plugin 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+" Plugin 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+
 " navigating through text
 Plugin 'easymotion/vim-easymotion'
 Plugin 'scrooloose/nerdcommenter'
+
 " fuzzy file finder
 Plugin 'kien/ctrlp.vim'
 
-"not working at the moment - vim version issue
-"Plugin 'valloric/youcompleteme'
-
 " syntax checker
 Plugin 'scrooloose/syntastic'
+
+" surround text with stuff
+Plugin 'tpope/vim-surround'
 
 " git features
 Plugin 'tpope/vim-fugitive'
@@ -37,11 +39,17 @@ Plugin 'xuyuanp/nerdtree-git-plugin'
 " syntax highlighting
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'elzr/vim-json'
+Plugin 'hdima/python-syntax'
 
 " nerdtree
 Plugin 'scrooloose/nerdtree'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 
+" scrolling
+Plugin 'yuttie/comfortable-motion.vim'
+
+" autocomplete
+Plugin 'Valloric/YouCompleteMe'
 
 " <==========================================>
 call vundle#end()
@@ -79,6 +87,8 @@ nnoremap <C-q> :tabclose<CR>
 " get to nerdtree easily
 nnoremap <leader>n :NERDTreeFocus<CR>
 
+" removes highlighting after search with ESC
+nnoremap <esc> :noh<return><esc>
 
 " =================
 "  VIEWS
@@ -102,9 +112,14 @@ let g:airline_left_sep = ''
 " search highlighting
 :set hlsearch
 :set incsearch
+" search center screen
+:set scrolloff=15
 
 " line numbers
 :set number 
+
+" search case insensitive
+:set ignorecase
 
 "open nerd tree on startup
 autocmd StdinReadPre * let s:std_in=1
