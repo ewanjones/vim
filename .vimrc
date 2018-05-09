@@ -1,6 +1,14 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+" set python interpreter to system
+let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+
+set expandtab
+set tabstop=4
+set sw=4
+
+
 " =================
 "  VUNDLE
 " =================
@@ -8,16 +16,16 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+
 " <==========================================>
 " PLUGINS
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+
 " vim-airline status bar
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-" powerline - fancy fonts
-" Plugin 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 " navigating through text
 Plugin 'easymotion/vim-easymotion'
@@ -49,7 +57,8 @@ Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plugin 'yuttie/comfortable-motion.vim'
 
 " autocomplete
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
+Plugin 'jiangmiao/auto-pairs'
 
 " <==========================================>
 call vundle#end()
@@ -72,11 +81,11 @@ filetype plugin indent on    " required
 "  KEY MAPPINGS
 " =================
 
-:let mapleader = ","
+let mapleader = ","
 
 "move lines up and down
-inoremap <up> <esc>ddkPi
-inoremap <down> <esc>ddpi
+"inoremap <up> <esc>ddkPi
+"inoremap <down> <esc>ddpi
 
 " switch tabs easily
 nnoremap <C-h> :tabprev<CR>
@@ -84,15 +93,22 @@ nnoremap <C-l> :tabnext<CR>
 " close tab
 nnoremap <C-q> :tabclose<CR>
 
-" get to nerdtree easily
-nnoremap <leader>n :NERDTreeFocus<CR>
+"nerdtree settings
+nnoremap <leader>n :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
 
 " removes highlighting after search with ESC
 nnoremap <esc> :noh<return><esc>
 
+" switch between linter errors
+nnoremap <leader>e :SyntasticToggleMode<enter>
+nnoremap <leader>l :lnext
+nnoremap <leader><leader>l :lprevious
+
 " =================
-"  VIEWS
+"  SETTINGS 
 " =================
+"
 " hide welcome message 
 set shortmess=I
 
@@ -104,22 +120,43 @@ let g:netrw_winsize = 25
 
 " airline arrows
 let g:airline_powerline_fonts = 1
-let g:airline_right_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_left_alt_sep= ''
-let g:airline_left_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_left_alt_sep= ''
+let g:airline_left_sep = ''
+
+let g:airline#extensions#default#layout = [
+  \ [ 'a', 'b', 'c' ],
+  \ [ 'x', 'z', 'error', 'warning' ]
+\ ]
+
+" syntastic highlighting options
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_python_checkers = ['flake8']
 
 " search highlighting
-:set hlsearch
-:set incsearch
+set hlsearch
+set incsearch
+
+ "ctrlp settings
+let g:ctrlp_working_path_mode = 'ra' 
+set wildignore+=*/node_modules/*
+
 " search center screen
-:set scrolloff=15
+set scrolloff=15
 
 " line numbers
-:set number 
+set number 
 
 " search case insensitive
-:set ignorecase
+set ignorecase
 
 "open nerd tree on startup
 autocmd StdinReadPre * let s:std_in=1
