@@ -34,8 +34,9 @@ Plugin 'scrooloose/nerdcommenter'
 " fuzzy file finder
 Plugin 'kien/ctrlp.vim'
 
-" syntax checker
+" syntax checkers
 Plugin 'scrooloose/syntastic'
+Plugin 'gcorne/vim-sass-lint'
 
 " surround text with stuff
 Plugin 'tpope/vim-surround'
@@ -48,6 +49,11 @@ Plugin 'xuyuanp/nerdtree-git-plugin'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'elzr/vim-json'
 Plugin 'hdima/python-syntax'
+
+" markdown features
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+
 
 " nerdtree
 Plugin 'scrooloose/nerdtree'
@@ -102,8 +108,8 @@ nnoremap <esc> :noh<return><esc>
 
 " switch between linter errors
 nnoremap <leader>e :SyntasticToggleMode<enter>
-nnoremap <leader>l :lnext
-nnoremap <leader><leader>l :lprevious
+nnoremap <leader>l :lnext<CR>
+nnoremap <leader><leader>l :lprevious<CR>
 
 " =================
 "  SETTINGS 
@@ -130,24 +136,43 @@ let g:airline#extensions#default#layout = [
   \ [ 'x', 'z', 'error', 'warning' ]
 \ ]
 
-" syntastic highlighting options
+" syntastic 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 1
 
+"you coplete me
+"let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+
+
+let g:syntastic_javascript_checkers=['eslint']
 let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_scss_checkers=["sasslint"]
 
 " search highlighting
 set hlsearch
 set incsearch
 
+" markdown plugin settings
+let g:vim_markdown_folding_disabled = 1
+set conceallevel=2
+
+
+"nerd commenter 
+let g:NERDSpaceDelims = 1
+let g:NERDCommentEmptyLines = 1
+
+
+
  "ctrlp settings
 let g:ctrlp_working_path_mode = 'ra' 
 set wildignore+=*/node_modules/*
+"lets ctrlp read gitignore
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " search center screen
 set scrolloff=15
