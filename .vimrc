@@ -1,4 +1,3 @@
-set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set python interpreter to system
@@ -65,6 +64,8 @@ Plugin 'yuttie/comfortable-motion.vim'
 " autocomplete
 "Plugin 'Valloric/YouCompleteMe'
 Plugin 'jiangmiao/auto-pairs'
+Plugin 'alvan/vim-closetag'
+
 
 " <==========================================>
 call vundle#end()
@@ -89,22 +90,16 @@ filetype plugin indent on    " required
 
 let mapleader = ","
 
-"move lines up and down
-"inoremap <up> <esc>ddkPi
-"inoremap <down> <esc>ddpi
-
 " switch tabs easily
 nnoremap <C-h> :tabprev<CR>
 nnoremap <C-l> :tabnext<CR>
-" close tab
-nnoremap <C-q> :tabclose<CR>
 
 "nerdtree settings
 nnoremap <leader>n :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
 
-" removes highlighting after search with ESC
-nnoremap <esc> :noh<return><esc>
+" removes highlighting after search 
+nnoremap <C-q> :noh<return><esc>
 
 " switch between linter errors
 nnoremap <leader>e :SyntasticToggleMode<enter>
@@ -165,12 +160,17 @@ set conceallevel=2
 "nerd commenter 
 let g:NERDSpaceDelims = 1
 let g:NERDCommentEmptyLines = 1
+let g:NERDDefaultAlign = 'left'
 
+" vim-closetag
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx'
 
+" allow insert mode backspace
+set backspace=indent,eol,start
 
  "ctrlp settings
 let g:ctrlp_working_path_mode = 'ra' 
-set wildignore+=*/node_modules/*
+set wildignore+=*/node_modules/*,*.swp,*.pyc
 "lets ctrlp read gitignore
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
