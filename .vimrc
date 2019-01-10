@@ -7,6 +7,8 @@ set expandtab
 set tabstop=4
 set sw=4
 
+set colorcolumn=99
+set timeoutlen=400
 
 " =================
 "  VUNDLE
@@ -22,47 +24,61 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+" NAVIGATION
+" ==========
+
 " vim-airline status bar
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-
 " navigating through text
 Plugin 'easymotion/vim-easymotion'
 Plugin 'scrooloose/nerdcommenter'
-
 " fuzzy file finder
 Plugin 'kien/ctrlp.vim'
+" nerdtree
+Plugin 'scrooloose/nerdtree'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+" scrolling
+Plugin 'yuttie/comfortable-motion.vim'
+
+" text objects
+Plugin 'kana/vim-textobj-indent'
+Plugin 'kana/vim-textobj-user'      " required for above
+Plugin 'bps/vim-textobj-python'
+
+" repeating actions
+Plugin 'tpope/vim-repeat'
+
+" git features
+Plugin 'tpope/vim-fugitive'              " git features
+Plugin 'xuyuanp/nerdtree-git-plugin'
+Plugin 'airblade/vim-gitgutter'         " git diff in the sidebar
+Plugin 'gregsexton/gitv'
+
+" syntax 
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'elzr/vim-json'
+Plugin 'hdima/python-syntax'
+
+" markdown 
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 " syntax checkers
 Plugin 'scrooloose/syntastic'
 Plugin 'gcorne/vim-sass-lint'
 
+" code folding
+Plugin 'tmhedberg/SimpylFold'
+
 " surround text with stuff
 Plugin 'tpope/vim-surround'
+Plugin 'andrewradev/splitjoin.vim'      " split lines nicely
 
-" git features
-Plugin 'tpope/vim-fugitive'
-Plugin 'xuyuanp/nerdtree-git-plugin'
-
-" syntax highlighting
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'elzr/vim-json'
-Plugin 'hdima/python-syntax'
-
-" markdown features
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-
-
-" nerdtree
-Plugin 'scrooloose/nerdtree'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-
-" scrolling
-Plugin 'yuttie/comfortable-motion.vim'
 
 " autocomplete
 "Plugin 'Valloric/YouCompleteMe'
+Plugin 'ervandew/supertab'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'alvan/vim-closetag'
 
@@ -90,9 +106,21 @@ filetype plugin indent on    " required
 
 let mapleader = ","
 
+" no arrow keys
+inoremap <Left>  <NOP>
+inoremap <Right> <NOP>
+inoremap <Up>    <NOP>
+inoremap <Down>  <NOP>
+
 " switch tabs easily
 nnoremap <C-h> :tabprev<CR>
 nnoremap <C-l> :tabnext<CR>
+
+" remove search highlighting
+nnoremap <leader>h :noh<CR>
+
+" Search codebase for word under cursor (v useful)
+nnoremap gw :grep <cword> .  <CR>
 
 "nerdtree settings
 nnoremap <leader>n :NERDTreeToggle<CR>
@@ -106,12 +134,19 @@ nnoremap <leader>e :SyntasticToggleMode<enter>
 nnoremap <leader>l :lnext<CR>
 nnoremap <leader><leader>l :lprevious<CR>
 
+"switching between :grep results
+nmap <silent> <RIGHT> :cnext<CR>
+nmap <silent> <LEFT> :cprev<CR>
+
+" COMMAND ALIASES
+cnoreabbrev rws %s/\s\+$//e
+
 " =================
 "  SETTINGS 
 " =================
 "
 " hide welcome message 
-set shortmess=I
+set shortmess=Ia
 
 " Set width of explorer
 let g:netrw_winsize = 25
@@ -135,14 +170,16 @@ let g:airline#extensions#default#layout = [
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake_args = '--config src/setup.cfg'
+
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
 
-"you coplete me
+"you complete me
 "let g:ycm_path_to_python_interpreter = '/usr/bin/python'
-
 
 let g:syntastic_javascript_checkers=['eslint']
 let g:syntastic_python_checkers = ['flake8']
@@ -156,6 +193,9 @@ set incsearch
 let g:vim_markdown_folding_disabled = 1
 set conceallevel=2
 
+" simpylfold
+let g:SimpylFold_fold_docstring = 0
+let g:SimpylFold_fold_import = 0
 
 "nerd commenter 
 let g:NERDSpaceDelims = 1
@@ -194,4 +234,13 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " Turn on syntax highlighting
 syntax on 
 
+" =============
+" SCRIPTS
+" =============
 
+" set silver_searcher as the main grep searching
+if executable('ag')
+    " Note we extract the column as well as the file and line number
+    set grepprg=ag\ --nogroup\ --column
+    set grepformat=%f:%l:%c%m
+endif
